@@ -1,6 +1,10 @@
 # Program
 
-This file is the operating program for an external agent run.
+This file is the operating program for a scheduled automation run.
+
+It is intended to work as the control surface for Codex and Claude Code automations.
+
+Each invocation should complete exactly one observe cycle and then stop. Repetition belongs to the scheduler.
 
 It watches `karpathy/autoresearch`, its forks, directly inspired repos, and broader public discussion, extracts only the portable lessons, and decides whether this repo's docs should change.
 
@@ -33,28 +37,27 @@ This repo applies a review loop derived from the autoresearch loop:
 
 ## Run Program
 
-1. Choose a short run tag based on today's date, for example `mar11`.
-2. Create a fresh dedicated branch `autoresearch/<tag>` from the default branch, currently `master`. If that branch already exists, pick a new tag instead of reusing it.
-3. Read the most recent dated section in `memory.md` if it exists.
-4. Reuse its `Checked through` timestamp as the lower bound for the next run.
-5. If no prior section exists, use the last 48 hours and say so explicitly.
-6. Check upstream changes in `karpathy/autoresearch` since that lower bound.
-7. Search GitHub for architecture-relevant repos directly inspired by autoresearch, not just forks.
-8. Scan broader web signals for non-repo evidence such as articles and papers.
-9. Pull strong web leads back to primary sources when possible, such as repos, commits, docs, or explicit author statements.
-10. Keep the search broad enough to catch non-fork innovation, but narrow enough to stay focused on portable architecture rather than hype.
-11. Distinguish:
+1. Read the most recent dated section in `memory.md` if it exists.
+2. Reuse its `Checked through` timestamp as the lower bound for the next run.
+3. If no prior section exists, use the last 48 hours and say so explicitly.
+4. Check upstream changes in `karpathy/autoresearch` since that lower bound.
+5. Search GitHub for architecture-relevant repos directly inspired by autoresearch, not just forks.
+6. Scan broader web signals for non-repo evidence such as articles and papers.
+7. Pull strong web leads back to primary sources when possible, such as repos, commits, docs, or explicit author statements.
+8. Keep the search broad enough to catch non-fork innovation, but narrow enough to stay focused on portable architecture rather than hype.
+9. Distinguish:
    - genuinely new discoveries
    - materially updated earlier discoveries
    - already known items with no meaningful new information
-12. Extract only the lessons that survive abstraction away from the original domain.
-13. Decide whether this repo should:
+10. Extract only the lessons that survive abstraction away from the original domain.
+11. Decide whether this repo should:
    - `update now`
    - `watch only`
    - `no action`
-14. If the decision is `watch only` or `no action`, append one dated section to `memory.md` and stop.
-15. If the decision is `update now`, run the bounded promotion loop below.
-16. Append one dated section to `memory.md` including the promotion outcome.
+12. If the decision is `watch only` or `no action`, append one dated section to `memory.md` and stop.
+13. If the decision is `update now`, create a fresh dedicated branch `autoresearch/<YYYYMMDD-HHMMZ>` from the default branch, currently `master`, then run the bounded promotion loop below.
+14. Append one dated section to `memory.md` including the promotion outcome.
+15. Stop. Do not begin another cycle in the same invocation.
 
 ## Discovery Rules
 
@@ -145,18 +148,20 @@ These themes are especially worth tracking, but should not be adopted casually:
 
 Only run this phase when the decision is `update now`.
 
+- create a fresh dedicated branch `autoresearch/<YYYYMMDD-HHMMZ>` for this run; use a UTC timestamp so scheduled runs do not collide
 - promotion targets `loop.md`
 - do not begin promotion if the tracked worktree is not clean; record `deferred` in the memory section and stop after appending the section
-- use the current `HEAD` on `autoresearch/<tag>` as the baseline
+- use the current `HEAD` on the run branch as the baseline
 - each candidate should be one conceptual change, not a bundle of unrelated edits
 - rejected candidates should stay in scratch or ephemeral working state and must not touch tracked files
 - when a candidate wins, write it to `loop.md` and commit it immediately on the run branch using `docs: promote loop <short-theme>`
 - never promote directly on the default branch
-- after a win, the new `HEAD` on the run branch becomes the new baseline and the loop may continue only if budget remains and there is another distinct justified pressure point
+- keep at most one winning promotion commit per scheduled run
+- after a win, leave the promotion loop and proceed to the output contract; do not start another candidate
 
 ## Output Contract
 
-`memory.md` is the only local run artifact.
+`memory.md` is the only local run artifact and the only persistent run state for this loop.
 
 Each run should append one dated section that stays concise and answers:
 
@@ -194,6 +199,8 @@ Include source links inline instead of maintaining a second machine-readable led
 
 Do not duplicate schema, policy, or templates in `memory.md`. `memory.md` is state only.
 
+Do not use platform-specific automation sidecar memory files as loop state. The repo-local `memory.md` is the source of truth for both Codex and Claude Code automations.
+
 ## File Boundaries
 
 Touch by default:
@@ -217,12 +224,12 @@ Default rule: write the digest, use scratch space, and leave the control docs al
 
 Git behavior:
 
-- start each run on a fresh branch `autoresearch/<tag>` from the default branch, currently `master`
 - do not commit directly on the default branch
 - if the decision is `watch only` or `no action`, append the memory section, do not commit
-- if the decision is `update now` and the tracked worktree is not clean, do not promote; record `deferred` in the memory section
-- if the decision is `update now` and the tracked worktree is clean, run the bounded promotion loop over `loop.md` only on the run branch
-- commit each winning promotion immediately on the run branch; each promotion commit should touch only `loop.md`
+- do not create a run branch unless the decision is `update now`
+- if the decision is `update now` and the tracked worktree is not clean, do not create a branch or promote; record `deferred` in the memory section
+- if the decision is `update now` and the tracked worktree is clean, create `autoresearch/<YYYYMMDD-HHMMZ>` from the default branch and run the bounded promotion loop over `loop.md` only on that run branch
+- commit at most one winning promotion on the run branch; that commit should touch only `loop.md`
 - if no promotion wins, leave the run branch disposable
 - leave integration of kept promotion commits back to the default branch to the human after review
 - don't commit `memory.md` or `.scratch/`
