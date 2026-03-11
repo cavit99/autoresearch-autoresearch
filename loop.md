@@ -168,6 +168,18 @@ Use this mapping when moving the pattern into another repo:
 | Ledger | How are outcomes recorded? | TSV, JSON scorecards, database rows |
 | Artifact store | Where do run outputs go? | local workdir, S3, blob store |
 
+## Common Repo Shape
+
+A small repo often operationalizes this pattern as:
+
+- `program.md` or equivalent for policy
+- one small mutable target
+- a stable truth layer
+- a local ledger such as `ledger.md`, `results.tsv`, or scorecards
+- a runner or automation that executes one bounded cycle
+
+Exact file names and formats do not matter; optimize them for the specific domain and use case. The important property is separation: small policy, narrow mutable surface, stable verifier and truth layer within a loop, and enough ledger state to compare future runs.
+
 ## Porting Checklist
 
 - Define the human control surface.

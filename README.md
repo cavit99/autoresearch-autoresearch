@@ -14,12 +14,12 @@ This repo is deliberately small and only really has three tracked files that mat
 
 Local untracked artifacts:
 
-- `memory.md` - append-only local run log
+- `ledger.md` - append-only local run log
 - `.scratch/github-inspection/` - temporary inspection area
 
 `program.md` is the automation entry point. Each scheduled run completes one observe cycle and stops. Only `update now` runs may enter a bounded promotion loop over `loop.md`; recurrence comes from the scheduler.
 
-`memory.md` is local run state and an append-only ledger for future runs, not part of the promoted canonical doc surface. `memory.md` and `.scratch/` stay out of git.
+`ledger.md` is local run state and an append-only ledger for future runs, not part of the promoted canonical doc surface. `ledger.md` and `.scratch/` stay out of git.
 
 ## Scope
 

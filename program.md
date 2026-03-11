@@ -29,7 +29,7 @@ This repo applies a review loop derived from the autoresearch loop:
 - Mutable promotion surface:
   - `loop.md`, and occasional contract edits in `README.md` when the repo contract itself changes
 - Local state and ledger:
-  - `memory.md`, which carries forward run state and doc pressure but is not part of the promoted canonical surface
+  - `ledger.md`, which carries forward run state and doc pressure but is not part of the promoted canonical surface
 - Verifier:
   - the inclusion, KISS, and recommendation rules below
 - Keep or discard:
@@ -37,7 +37,7 @@ This repo applies a review loop derived from the autoresearch loop:
 
 ## Run Program
 
-1. Read the most recent dated section in `memory.md` if it exists.
+1. Read the most recent dated section in `ledger.md` if it exists.
 2. Reuse its `Checked through` timestamp as the lower bound for the next run.
 3. If no prior section exists, use the last 48 hours and say so explicitly.
 4. Check upstream changes in `karpathy/autoresearch` since that lower bound.
@@ -54,9 +54,9 @@ This repo applies a review loop derived from the autoresearch loop:
    - `update now`
    - `watch only`
    - `no action`
-12. If the decision is `watch only` or `no action`, append one dated section to `memory.md` and stop.
+12. If the decision is `watch only` or `no action`, append one dated section to `ledger.md` and stop.
 13. If the decision is `update now`, create a fresh dedicated branch `autoresearch/<YYYYMMDD-HHMMZ>` from the default branch, currently `master`, then run the bounded promotion loop below.
-14. Append one dated section to `memory.md` including the promotion outcome.
+14. Append one dated section to `ledger.md` including the promotion outcome.
 15. Stop. Do not begin another cycle in the same invocation.
 
 ## Discovery Rules
@@ -162,7 +162,7 @@ Only run this phase when the decision is `update now`.
 
 ## Output Contract
 
-`memory.md` is the only local run artifact and the only persistent run state for this loop.
+`ledger.md` is the only local run artifact and the only persistent run state for this loop.
 
 Each run should append one dated section that stays concise and answers:
 
@@ -198,14 +198,14 @@ In `Checked through`:
 
 Include source links inline instead of maintaining a second machine-readable ledger.
 
-Do not duplicate schema, policy, or templates in `memory.md`. `memory.md` is state only.
+Do not duplicate schema, policy, or templates in `ledger.md`. `ledger.md` is state only.
 
-Platform-specific automation sidecar memory files may be used as local run summaries or debugging notes, but not as authoritative loop state. The repo-local `memory.md` is the source of truth for automations.
+Platform-specific automation sidecar memory files may be used as local run summaries or debugging notes, but not as authoritative loop state. The repo-local `ledger.md` is the source of truth for automations.
 
 ## File Boundaries
 
 Touch by default:
-- append new dated section to `memory.md`
+- append new dated section to `ledger.md`
 - use `.scratch/github-inspection/` for temporary inspection work and clean it afterward
 
 Touch only when the evidence clearly justifies a repo change:
@@ -233,7 +233,7 @@ Git behavior:
 - commit at most one winning promotion on the run branch; that commit should touch only `loop.md`
 - if no promotion wins, leave the run branch disposable
 - leave integration of kept promotion commits back to the default branch to the human after review
-- don't commit `memory.md` or `.scratch/`
+- don't commit `ledger.md` or `.scratch/`
 - include kept short hashes and discarded candidate count in that day's `Promotion` section
 
 ## Working Constraints
