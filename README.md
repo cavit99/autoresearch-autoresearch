@@ -21,11 +21,9 @@ Local untracked artifacts:
 
 `memory.md` is local run state and an append-only ledger for future runs, not part of the promoted canonical doc surface. `memory.md` and `.scratch/` stay out of git.
 
-When a run produces a tracked doc change, keep it on a fresh dedicated `autoresearch/<tag>` branch instead of promoting directly on the default branch, currently `master`.
+## Scope
 
-## What To Watch
-
-Track only portable architecture changes, for example:
+This repo tracks portable architecture changes. The examples below are illustrative, not a binding checklist:
 
 - control surfaces
 - mutable versus fixed boundaries
@@ -36,7 +34,7 @@ Track only portable architecture changes, for example:
 - coordination layers above the core loop
 - platform, backend, or metric shifts that create a genuinely different loop
 
-If a signal is interesting only because of the original training domain, ignore it.
+If a signal is interesting only because of the original training domain, it is out of scope here.
 
 See `program.md` for the run procedure and `loop.md` for the abstraction being maintained.
 
