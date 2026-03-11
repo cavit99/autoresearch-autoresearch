@@ -1,4 +1,4 @@
-# Autoresearch Autoresearch Loop
+# Autoresearch Loop
 
 ## Purpose
 
