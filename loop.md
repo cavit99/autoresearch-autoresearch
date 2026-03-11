@@ -105,13 +105,13 @@ Requirements:
 
 ### 5. Execution Harness
 
-This runs the candidate against the truth layer under bounded resources.
+This runs the candidate against the truth layer under a fixed comparison budget.
 
 Requirements:
 
-- explicit time and resource limits
+- explicit time, step, or resource budgets that stay stable within a search loop
 - deterministic enough for comparison
-- clear crash handling
+- clear timeout and crash handling
 - no hidden human steps during unattended runs
 
 ### 6. Ledger And Artifacts
@@ -121,27 +121,33 @@ Every run should leave behind enough evidence to understand what happened.
 Minimum outputs:
 
 - candidate or diff
+- named incumbent or baseline reference
 - status: `keep`, `discard`, or `crash`
 - key metrics
 - artifact locations
-- parent or baseline reference
 - timestamp or run id
 
 ## The Portable Loop
 
 1. Read the control surface and current state.
-2. Pick one bounded mutation to the experiment surface.
-3. Run the candidate under fixed resource limits.
-4. Record metrics and artifacts.
-5. If the verifier says it improved enough, keep it.
-6. If it failed or regressed, discard or rewind.
-7. Repeat until interrupted or budget is exhausted.
+2. Identify the current incumbent or baseline state.
+3. Pick one bounded mutation to the experiment surface from that incumbent.
+4. Run the candidate under the same verifier and comparison budget.
+5. Record metrics and artifacts.
+6. Compare the candidate against the incumbent.
+7. If it improved enough, keep it and make it the new incumbent.
+8. If it failed or regressed, discard or rewind to the incumbent.
+9. Repeat until interrupted or budget is exhausted.
 
 ## Non-Negotiable Design Rules
 
 - Keep the mutable surface tiny.
 - Keep the verifier fixed during a search loop.
 - Keep the truth layer separate from the experiment surface.
+- Compare candidates against a named incumbent, not against memory or vibes.
+- Every kept change becomes the new incumbent for the next step.
+- Compare candidates under the same budget envelope.
+- If the budget, backend, dataset, or metric changes materially, treat it as a sibling loop or new baseline.
 - Prefer cheap, comparable runs over heroic but noisy runs.
 - Make crashes first-class outcomes, not invisible failures.
 - Keep generated artifacts out of git unless they are canonical inputs.
@@ -156,6 +162,7 @@ Use this mapping when moving the pattern into another repo:
 | Human control surface | Where does policy live? | `program.md`, policy YAML, experiment brief |
 | Truth layer | What must stay stable while searching? | captures, fixtures, datasets, simulators |
 | Mutable surface | What may the agent change? | candidate spec, rules file, one code module |
+| Incumbent state | What is the current candidate to beat? | kept commit, deployed config, active ruleset |
 | Verifier | How is success measured? | holdout metric, scorecard, tests, replay outcome |
 | Execution harness | How is a run launched and bounded? | CLI, task runner, scheduled job |
 | Ledger | How are outcomes recorded? | TSV, JSON scorecards, database rows |
@@ -164,9 +171,10 @@ Use this mapping when moving the pattern into another repo:
 ## Porting Checklist
 
 - Define the human control surface.
-- Define the verifier.
 - Define the immutable or stable truth layer.
 - Define the smallest possible mutable experiment surface.
+- Define the incumbent or baseline reference.
+- Define the verifier.
 - Define run budgets and crash handling.
 - Define output artifacts and ledger shape.
 - Define the keep/discard rule.
@@ -190,6 +198,7 @@ The domain changes:
 - data type
 - candidate representation
 - runtime environment
+- budget definition
 - metric definition
 - failure modes
 
@@ -197,8 +206,9 @@ The architecture does not change:
 
 - human policy
 - bounded mutation
+- fixed comparison budget within a loop
+- named incumbent plus keep/discard
 - auditable artifacts
-- keep/discard loop
 
 ## Update Policy
 
