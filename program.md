@@ -50,14 +50,15 @@ This repo applies a review loop derived from the autoresearch loop:
    - materially updated earlier discoveries
    - already known items with no meaningful new information
 10. Extract only the lessons that survive abstraction away from the original domain.
-11. Decide whether this repo should:
+11. Ask whether the signal changes the control surface, verification boundary, artifact model, or unattended-run ergonomics of the loop itself.
+12. Decide whether this repo should:
    - `update now`
    - `watch only`
    - `no action`
-12. If the decision is `watch only` or `no action`, append one dated section to `ledger.md` and stop.
-13. If the decision is `update now`, create a fresh dedicated branch `autoresearch/<YYYYMMDD-HHMMZ>` from the default branch, currently `master`, then run the bounded promotion loop below.
-14. Append one dated section to `ledger.md` including the promotion outcome.
-15. Stop. Do not begin another cycle in the same invocation.
+13. If the decision is `watch only` or `no action`, append one dated section to `ledger.md` and stop.
+14. If the decision is `update now`, create a fresh dedicated branch `autoresearch/<YYYYMMDD-HHMMZ>` from the default branch, currently `master`, then run the bounded promotion loop below.
+15. Append one dated section to `ledger.md` including the promotion outcome.
+16. Stop. Do not begin another cycle in the same invocation.
 
 ## Discovery Rules
 
@@ -135,6 +136,8 @@ Use `no action` when:
 - the signal is mostly packaging, setup, mirror churn, or hype
 - the current docs already cover the lesson well enough
 - the candidate is only stylistic and does not change likely reader interpretation or decisions
+
+When deciding whether `loop.md` should change, prefer canon only for lessons that would make a careful downstream adopter revise their own loop. If the signal does not survive abstraction or does not affect the loop's control surface, verification boundary, artifact model, or unattended-run ergonomics, record it in `ledger.md` instead of promoting it into the canon.
 
 ## Candidate Pressure To Watch
 

@@ -170,17 +170,7 @@ Use this mapping when moving the pattern into another repo:
 | Ledger | How are outcomes recorded? | TSV, JSON scorecards, database rows |
 | Artifact store | Where do run outputs go? | local workdir, S3, blob store |
 
-## Common Repo Shape
-
-A small repo often operationalizes this pattern as:
-
-- `program.md` or equivalent for policy
-- one small mutable target
-- a stable truth layer
-- a local ledger such as `ledger.md`, `results.tsv`, or scorecards
-- a runner or automation that executes one bounded cycle
-
-Exact file names and formats do not matter; optimize them for the specific domain and use case. The important property is separation: small policy, narrow mutable surface, stable verifier and truth layer within a loop, and enough ledger state to compare future runs.
+A small repo often operationalizes this pattern with a policy file such as `program.md`, one small mutable target, a stable truth layer, a local ledger such as `ledger.md`, `results.tsv`, or scorecards, and a runner or automation that executes one bounded cycle. Exact file names and formats do not matter; optimize them for the specific domain and use case. The important property is separation: small policy, narrow mutable surface, stable verifier and truth layer within a loop, and enough ledger state to compare future runs.
 
 ## Porting Checklist
 
@@ -193,7 +183,6 @@ Exact file names and formats do not matter; optimize them for the specific domai
 - Define output artifacts and ledger shape.
 - Define the keep/discard rule.
 - Define what must remain untracked.
-- Define what should be checked daily from upstream inspirations.
 
 ## Anti-Patterns
 
@@ -223,14 +212,3 @@ The architecture does not change:
 - fixed comparison budget within a loop
 - named incumbent plus keep/discard
 - auditable artifacts
-
-## Update Policy
-
-When upstream projects such as `karpathy/autoresearch` change, ask:
-
-1. Is this a domain-specific tweak, or a portable architectural lesson?
-2. Does it change the control surface, verification boundary, artifact model, or unattended-run ergonomics?
-3. Should this repo's abstraction change?
-4. Should downstream repos adopting this pattern change too?
-
-Only update this document when the lesson survives abstraction and generalizes to other systems.
