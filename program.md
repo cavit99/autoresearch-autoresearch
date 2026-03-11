@@ -79,6 +79,7 @@ For GitHub discovery:
 - always check upstream `karpathy/autoresearch`, but do not treat forks as the only meaningful search surface
 - actively search for non-fork repos that reference `autoresearch`, implement the same loop, or clearly cite the upstream idea
 - use metadata first
+- prefer built-in web search and ordinary page inspection for scheduled runs; use authenticated CLI tooling such as `gh` opportunistically, not as a hard dependency
 - use commit inspection before cloning if necessary
 - inspect files only for the strongest candidates
 - be selective about the candidate set
@@ -199,7 +200,7 @@ Include source links inline instead of maintaining a second machine-readable led
 
 Do not duplicate schema, policy, or templates in `memory.md`. `memory.md` is state only.
 
-Do not use platform-specific automation sidecar memory files as loop state. The repo-local `memory.md` is the source of truth for both Codex and Claude Code automations.
+Platform-specific automation sidecar memory files may be used as local run summaries or debugging notes, but not as authoritative loop state. The repo-local `memory.md` is the source of truth for automations.
 
 ## File Boundaries
 
