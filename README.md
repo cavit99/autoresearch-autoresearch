@@ -1,8 +1,8 @@
 # Autoresearch Autoresearch
 
-This repo watches `karpathy/autoresearch` and adjacent systems, keeps a local daily digest of what changed, and updates its own docs only when a portable lesson is strong enough to keep.
+This repo maintains a canonical portable autoresearch loop in `loop.md`: a reference abstraction that others can adapt to specific domains and implementations.
 
-The point is not to track LLM training details for their own sake. The point is to maintain a reusable abstraction for autoresearch-style loops across domains.
+Its main reference case is `karpathy/autoresearch`, but the goal here is not to mirror that repo. The goal is to extract the underlying loop architecture, keep it portable, and refine it when new evidence justifies a change.
 
 ## Files That Matter
 

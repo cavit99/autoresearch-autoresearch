@@ -112,6 +112,8 @@ Requirements:
 - explicit time, step, or resource budgets that stay stable within a search loop
 - deterministic enough for comparison
 - clear timeout and crash handling
+- progress should be observable during long-running, costly, or side-effecting runs
+- safe interruption or cancellation should exist when runs can incur material cost or external side effects
 - no hidden human steps during unattended runs
 
 ### 6. Ledger And Artifacts
