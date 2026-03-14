@@ -122,6 +122,7 @@ Requirements:
 ### 6. Ledger And Artifacts
 
 Every run should leave behind enough evidence to understand what happened.
+When a loop can outlive one agent context or process, the artifact layer should also carry enough persisted state for a fresh agent to resume without relying on transient memory.
 
 Minimum outputs:
 
@@ -130,6 +131,7 @@ Minimum outputs:
 - status: `keep`, `discard`, or `crash`
 - key metrics
 - artifact locations
+- resume-capable state or session summary when resumability matters
 - timestamp or run id
 
 ## The Portable Loop
@@ -157,6 +159,7 @@ Minimum outputs:
 - Prefer cheap, comparable runs over heroic but noisy runs.
 - Make crashes first-class outcomes, not invisible failures.
 - Keep generated artifacts out of git unless they are canonical inputs.
+- Do not let long-running loop state live only in transient agent memory.
 - Do not let unattended runs depend on hidden local approval prompts when that can be avoided.
 
 ## Porting Template
