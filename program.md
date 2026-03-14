@@ -37,28 +37,29 @@ This repo applies a review loop derived from the autoresearch loop:
 
 ## Run Program
 
-1. Read the most recent dated section in `ledger.md` if it exists.
-2. Reuse its `Checked through` timestamp as the lower bound for the next run.
-3. If no prior section exists, use the last 48 hours and say so explicitly.
-4. Check upstream changes in `karpathy/autoresearch` since that lower bound.
-5. Search GitHub for architecture-relevant repos directly inspired by autoresearch, not just forks.
-6. Scan broader web signals for non-repo evidence such as articles and papers.
-7. Pull strong web leads back to primary sources when possible, such as repos, commits, docs, or explicit author statements.
-8. Keep the search broad enough to catch non-fork innovation, but narrow enough to stay focused on portable architecture rather than hype.
-9. Distinguish:
+1. Check directly whether the repo-local path `ledger.md` exists. Remember that it is intentionally gitignored and may not appear in tracked-file listings or tools such as `rg --files`.
+2. If `ledger.md` exists, read its most recent dated section.
+3. Reuse that section's `Checked through` timestamp as the lower bound for the next run.
+4. If no prior section exists at that path, use the last 48 hours and say so explicitly.
+5. Check upstream changes in `karpathy/autoresearch` since that lower bound.
+6. Search GitHub for architecture-relevant repos directly inspired by autoresearch, not just forks.
+7. Scan broader web signals for non-repo evidence such as articles and papers.
+8. Pull strong web leads back to primary sources when possible, such as repos, commits, docs, or explicit author statements.
+9. Keep the search broad enough to catch non-fork innovation, but narrow enough to stay focused on portable architecture rather than hype.
+10. Distinguish:
    - genuinely new discoveries
    - materially updated earlier discoveries
    - already known items with no meaningful new information
-10. Extract only the lessons that survive abstraction away from the original domain.
-11. Ask whether the signal changes the control surface, verification boundary, artifact model, or unattended-run ergonomics of the loop itself.
-12. Decide whether this repo should:
+11. Extract only the lessons that survive abstraction away from the original domain.
+12. Ask whether the signal changes the control surface, verification boundary, artifact model, or unattended-run ergonomics of the loop itself.
+13. Decide whether this repo should:
    - `update now`
    - `watch only`
    - `no action`
-13. If the decision is `watch only` or `no action`, append one dated section to `ledger.md` and stop.
-14. If the decision is `update now`, create a fresh dedicated branch `autoresearch/<YYYYMMDD-HHMMZ>` from the default branch, currently `master`, then run the bounded promotion loop below.
-15. Append one dated section to `ledger.md` including the promotion outcome.
-16. Stop. Do not begin another cycle in the same invocation.
+14. If the decision is `watch only` or `no action`, append one dated section to `ledger.md` and stop.
+15. If the decision is `update now`, create a fresh dedicated branch `autoresearch/<YYYYMMDD-HHMMZ>` from the default branch, currently `master`, then run the bounded promotion loop below.
+16. Append one dated section to `ledger.md` including the promotion outcome.
+17. Stop. Do not begin another cycle in the same invocation.
 
 ## Discovery Rules
 
@@ -205,6 +206,8 @@ Do not duplicate schema, policy, or templates in `ledger.md`. `ledger.md` is sta
 
 Platform-specific automation sidecar memory files may be used as local run summaries or debugging notes, but not as authoritative loop state. The repo-local `ledger.md` is the source of truth for automations.
 
+Never replace or recreate an existing `ledger.md`. If earlier local state needs correction, append a new dated correction section; do not erase prior sections.
+
 ## File Boundaries
 
 Touch by default:
@@ -245,5 +248,6 @@ Git behavior:
 - Use concrete commit links for claims.
 - Reuse scratch clone location under `.scratch/github-inspection/`.
 - Clean the scratch clone contents when done.
+- Do not use tracked-file discovery as an existence check for `ledger.md`; use a direct path read or filesystem check.
 - Do not propose doc changes just to stay busy.
 - If there are no meaningful portable lessons, say that clearly.
