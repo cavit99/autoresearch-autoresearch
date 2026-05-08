@@ -83,6 +83,7 @@ Requirements:
 - reviewable
 - cheap to mutate
 - easy to revert
+- mechanically enforceable during unattended runs
 
 ### 4. Verifier
 
@@ -102,6 +103,7 @@ Requirements:
 - hard to game accidentally
 - cheap enough to run repeatedly
 - produces machine-readable output
+- protected from candidate edits while its results are being trusted
 
 ### 5. Execution Harness
 
@@ -114,6 +116,7 @@ Requirements:
 - clear timeout and crash handling
 - progress should be observable during long-running, costly, or side-effecting runs
 - safe interruption or cancellation should exist when runs can incur material cost or external side effects
+- rejects out-of-scope edits or drift in sealed truth, verifier, or harness files before scoring a candidate
 - no hidden human steps during unattended runs
 
 ### 6. Ledger And Artifacts
@@ -146,6 +149,7 @@ Minimum outputs:
 - Keep the mutable surface tiny.
 - Keep the verifier fixed during a search loop.
 - Keep the truth layer separate from the experiment surface.
+- Treat scope and verifier integrity as preflight checks, not just prompt instructions.
 - Compare candidates against a named incumbent, not against memory or vibes.
 - Every kept change becomes the new incumbent for the next step.
 - Compare candidates under the same budget envelope.
